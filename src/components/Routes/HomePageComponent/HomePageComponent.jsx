@@ -4,74 +4,9 @@ import PropertyCardCompnent from '../../PropertyCardComponent/PropertyCardCompne
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPropertyData } from '../../../redux/property/propertySlice'
 import PropertiesLoadingComponent from '../../PropertiesLoadingComponent/PropertiesLoadingComponent'
+import pear from "../../../assets/pear-home.png"
 
 const HomePageComponent = () => {
-
-    // const [propertyData, setPropertyData] = useState([
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-
-    //   {
-    //     propertyType: "Flat",
-    //     propertyName: "Bella Vista",
-    //     beds: 3,
-    //     price: 4300,
-    //     guestFavourite: true,
-    //     images: ["https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200", "https://a0.muscache.com/im/pictures/miso/Hosting-895597397495104243/original/c6480170-00ad-47d5-a3c2-f1bbb671d29c.jpeg?im_w=1200"]
-    //   },
-    // ])
-    
-    // useEffect(() => {
-    //     getPropertyData()
-    // }, [])
-
-    const getPropertyData = async() => {
-        const response = await axios.get("http://localhost:3000/api/v1/property/getAllProperties")
-        setPropertyData(response.data)
-        console.log(response)
-        console.log(response.data)
-    }
 
     const propertyData = useSelector((state => state.property))
     const dispatch = useDispatch()
@@ -96,17 +31,21 @@ const HomePageComponent = () => {
               <PropertyCardCompnent property={property} key={index} />
             )) :
             !propertyData.loading && (
-              <div>
-                <p className='text-2xl text-center py-10'>
-                  No Properties found
-                </p>
+              <div className='flex items-center justify-center gap-20'>
+                <div className='flex flex-col gap-10'>
+                  <h1 className='text-7xl'>Oops!</h1>
+                  <h2 className='text-5xl'>No Properties found :(</h2>
+                </div>
+                <div>
+                  <img src={pear} className='h-[500px]'/>
+                </div>
               </div>
             )
         }
       </div>
         {
           !propertyData.loading && propertyData.error ?
-          <div><p>Error: {propertyData.error}</p></div> : null
+          <div><p className='text-2xl text-center py-10'>Error: {propertyData.error}</p></div> : null
         }
         
 

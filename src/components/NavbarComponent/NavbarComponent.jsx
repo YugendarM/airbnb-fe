@@ -81,9 +81,9 @@ const NavbarComponent = () => {
     <div className=''>
       <div className='flex justify-between items-center md:items-start px-4 md:px-10 py-10'>
 
-        <div className='w-[15%] md:w-[15%] lg:w-[20%] flex justify-'>
+        <Link to={"/"} className='w-[15%] md:w-[15%] lg:w-[20%] flex justify-'>
           <img src={logo} className='w-24'/>
-        </div>
+        </Link>
 
         <div className='w-[70%] md:w-[70%] lg:w-[60%] flex flex-col justify-center items-center gap-4'>
           <div className='hidden md:block'>
