@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import HeaderComponent from "../src/components/HeaderComponent/HeaderComponent"
 import HomePageComponent from "../src/components/Routes/HomePageComponent/HomePageComponent"
 import ProfilePageComponent from "../src/components/Routes/ProfilePageComponent/ProfilePageComponent"
+import PropertiesLoadingComponent from './components/PropertiesLoadingComponent/PropertiesLoadingComponent'
 
 
 const App = () => {

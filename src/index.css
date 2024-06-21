@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.carousel.carousel-slider .control-arrow {
+    background-color: transparent;
+}
+
+.control-prev {
+
+}
+
+button.control-arrow.control-prev::before{
+    /* height: 40px;
+    width: 40px;
+    background-color: black;
+    border-radius: 100%;
+    padding: 2px 4px; */
+    font-size: 40px;
+
+}
