@@ -6,7 +6,7 @@ import { FaRegCopyright } from "react-icons/fa";
 const FooterComponent = () => {
   return (
     <React.Fragment>
-      <div className='flex items-start md:items-center justify-between border-t border-gray-200 px-3 md:px-10 py-3 fixed bottom-0 w-full bg-10 z-20'>
+      <div className='bg-white flex items-start md:items-center justify-between border-t border-gray-200 px-3 md:px-10 py-3 fixed bottom-0 w-full bg-10 z-20'>
         <div className='md:flex items-center gap-3'>
             <p className='md:text-sm lg:text-base flex items-center gap-1'><FaRegCopyright />2024 Airbnb,Inc.</p><p className='hidden md:block'>|</p>
             <p className='md:text-sm lg:text-base hover:underline cursor-pointer transition'>Privacy</p><p className='hidden md:block'>|</p>

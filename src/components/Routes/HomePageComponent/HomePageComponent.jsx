@@ -32,12 +32,14 @@ const HomePageComponent = () => {
             )) :
             !propertyData.loading && (
               <div className='flex items-center justify-center gap-20'>
-                <div className='flex flex-col gap-10'>
-                  <h1 className='text-7xl'>Oops!</h1>
-                  <h2 className='text-5xl'>No Properties found :(</h2>
+                <div className='flex justify-center items-center'>
+                  <div className='flex flex-col gap-10'>
+                    <h1 className='text-5xl'>Oops!</h1>
+                    <h2 className='text-3xl'>No Properties found :(</h2>
+                  </div>
                 </div>
-                <div>
-                  <img src={pear} className='h-[500px]'/>
+                <div className='flex justify-center items-center'>
+                  <img src={pear} className='w-2/3'/>
                 </div>
               </div>
             )
@@ -45,7 +47,7 @@ const HomePageComponent = () => {
       </div>
         {
           !propertyData.loading && propertyData.error ?
-          <div><p className='text-2xl text-center py-10'>Error: {propertyData.error}</p></div> : null
+          <div><p className='text-lg text-center '>Error: {propertyData.error}</p></div> : null
         }
         
 
