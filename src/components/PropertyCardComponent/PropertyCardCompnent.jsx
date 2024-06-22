@@ -23,14 +23,20 @@ const PropertyCardCompnent = ({property}) => {
         </div>
         <div>
             <div className='flex justify-between items-center'>
-                <p className='text-lg font-semibold'>{property.propertyType} in {property.address.city}</p>
+                <p className='text-lg font-semibold'>{property.propertyType} in {property.address && property.address.city}</p>
                 {
                     property.ratings && 
                     <div className='flex items-center gap-2'>
-                        <MdOutlineStar />
-                        {property.ratings}
-                        {property.reviews && property.reviews.length}
+                        <div className='flex gap-2 items-center'>
+                            <MdOutlineStar />
+                            {property.ratings }
+                        </div>
+                        <div>
+                            {/* {property.reviews.length} */}
+                            {property.reviews.length ===0 ? null:  property.reviews.length}
+                        </div>
                     </div>
+
                 }
             </div>
             <p className='text-base text-gray-600'>{property.propertyName}</p>

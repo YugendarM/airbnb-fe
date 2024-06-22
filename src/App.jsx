@@ -5,6 +5,7 @@ import HomePageComponent from "../src/components/Routes/HomePageComponent/HomePa
 import ProfilePageComponent from "../src/components/Routes/ProfilePageComponent/ProfilePageComponent"
 import PropertiesLoadingComponent from './components/PropertiesLoadingComponent/PropertiesLoadingComponent'
 import FooterComponent from './components/FooterComponent/FooterComponent'
+import AddPropertyComponent from './components/Routes/AddPropertyComponent/AddPropertyComponent'
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
             <Route path='/' element={<HomePageComponent/>}/>
             {/* <Route path='/property/:propertyId' element={<HomePageComponent/>}/> */}
+            <Route path='/add/property' element={<AddPropertyComponent/>}/>
             <Route path='/profile' element={<ProfilePageComponent/>}/>
         </Routes>
         <FooterComponent/>

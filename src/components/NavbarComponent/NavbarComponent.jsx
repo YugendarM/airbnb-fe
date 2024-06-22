@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import logo from "../../assets/airbnb-logo-.png"
 import { FaGlobe } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -70,6 +70,9 @@ const NavbarComponent = () => {
   const clearSearchStates = () => {
     
   }
+
+  const location = useLocation()
+  console.log(location)
  
   return (
     <div className=''>
@@ -97,7 +100,9 @@ const NavbarComponent = () => {
 
             
 
-            <div className='rounded-full shadow-custom-light md:flex items-center w-full h-16 hidden '>
+            {
+              location.pathname !== "/add/property" &&
+              <div className='rounded-full shadow-custom-light md:flex items-center w-full h-16 hidden '>
               <div className='w-[30%] h-full cursor-pointer rounded-full hover:bg-gray-200 transition px-6 flex flex-col justify-center items-start '>
                 <p className='text-sm font-medium'>Where</p>
                 <input type='text' name='city' placeholder='Search destination' className='bg-inherit focus:outline-none placeholder:text-sm' onChange={(e) => setCity(e.target.value)}/>
@@ -160,6 +165,7 @@ const NavbarComponent = () => {
                 </div>
               </div>
             </div>
+            }
             {
               guestClicked && 
               <div ref={guestRef} className='bg-white w-[400px] flex flex-col gap-4 justify-end shadow-custom-light my-3 rounded-3xl px-8 py-6 z-10 fixed top-48'>
@@ -283,17 +289,17 @@ const NavbarComponent = () => {
 
               <div className='border-b border-gray-300 py-2'>
                 <div className='flex  items-center justify-between hover:bg-gray-200 px-2 cursor-pointer'>
-                  <p className='py-2 font-medium'>2024 Summer release features </p>
+                  <p className='py-2 font-light'>2024 Summer release features </p>
                   <p className='bg-airbnb-primaryPink text-white font-semibold p-1 text-xs rounded'>New</p>
                 </div>
               </div>
 
-              <div className='py-2 border-b border-gray-300'>
-                <ul>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>Messages</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>Notification</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>Trips</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>WishList</li>
+              <div className='py-2 border-b border-gray-300 w-full'>
+                <ul className='w-full'>
+                  <Link to={"/add/property"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Add your property</Link>
+                  <Link to={"/user/wishlist"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Wishlist</Link>
+                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Trips</li>
+                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Stays</li>
                 </ul>
               </div>
 
@@ -307,7 +313,7 @@ const NavbarComponent = () => {
               <div className='py-2 border-b border-gray-300'>
                 <ul>
                   <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Help Center</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Logout</li>
+                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>Logout</li>
                 </ul>
               </div>
             </div>
