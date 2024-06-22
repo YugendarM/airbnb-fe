@@ -12,8 +12,8 @@ const PropertyCardCompnent = ({property}) => {
         <Carousel showThumbs={false} showStatus={false}>
                 {
                     property.images && 
-                    property.images.map((image) => (
-                        <div className='w-full h-72 '>
+                    property.images.map((image, index) => (
+                        <div className='w-full h-72 ' key={index}>
                             <img src={`http://localhost:3000/${image}`} className='w-full h-full object-cover rounded-lg'/>
                         </div>
                     ))

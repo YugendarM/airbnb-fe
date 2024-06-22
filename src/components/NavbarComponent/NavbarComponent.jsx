@@ -6,9 +6,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoSearch } from "react-icons/io5";
 import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleMinus } from "react-icons/ci";
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { setSearchProperty } from '../../redux/property/propertySlice';
+import { searchProperty, setSearchProperty } from '../../redux/property/propertySlice';
 
 const NavbarComponent = () => {
 
@@ -45,7 +44,6 @@ const NavbarComponent = () => {
   };
 
   useEffect(() => {
-    
     document.addEventListener('mousedown', () => handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -53,15 +51,7 @@ const NavbarComponent = () => {
   }, []);
   
   const handleSearch = async() => {
-    console.log("city"+city)
-    console.log("adults"+guest.adults)
-    console.log("child"+guest.children)
-    console.log("infant"+guest.infants)
-    console.log("pet"+guest.pets)
-
-    const response = await axios.get(`http://localhost:3000/api/v1/property/search?city=${city}&adults=${guest.adults}&children=${guest.children}&infants=${guest.infants}&pets=${guest.pets}`)
-    console.log(response) 
-    dispatch(setSearchProperty(response.data))
+    dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
   }
 
   const getTodayDate = () => {
@@ -76,12 +66,16 @@ const NavbarComponent = () => {
   
     return `${year}-${month}-${day}`;
   };
+
+  const clearSearchStates = () => {
+    
+  }
  
   return (
     <div className=''>
       <div className='flex justify-between items-center md:items-start px-4 md:px-10 py-10'>
 
-        <Link to={"/"} className='w-[15%] md:w-[15%] lg:w-[20%] flex justify-'>
+        <Link onClick={() => clearSearchStates()} to={"/"} className='w-[15%] md:w-[15%] lg:w-[20%] flex justify-'>
           <img src={logo} className='w-24'/>
         </Link>
 
@@ -147,7 +141,9 @@ const NavbarComponent = () => {
                 <div className=''>
                   <p className='text-sm font-medium'>Who</p>
                   {/* <input className='bg-inherit focus:outline-none' type='text' name='people' placeholder='Add guests'/> */}
-                  <p className='text-sm text-gray-400 font-normal'>Add guests</p>
+                  <p className='text-sm text-gray-400 font-normal'>
+                    {guest.adults+guest.children+guest.infants ? <p>{guest.adults+guest.children+guest.infants} people</p> : <p>Add guests</p>}
+                  </p>
                 </div>
                 <div className='p-4 rounded-full bg-airbnb-primaryPink'>
                   {

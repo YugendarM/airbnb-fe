@@ -12,6 +12,17 @@ export const fetchPropertyData = createAsyncThunk(
     }
 )
 
+export const searchProperty = createAsyncThunk(
+    "property/searchProperty",
+    ({city,adults,children,infants,pets}) => {
+        return axios.get(`http://localhost:3000/api/v1/property/search?city=${city}&adults=${adults}&children=${children}&infants=${infants}&pets=${pets}`)
+        .then((response) => {
+            console.log(response)
+            return response.data
+        })
+    }
+)
+
 
 const propertySlice = createSlice({
     name: "property",
@@ -20,11 +31,6 @@ const propertySlice = createSlice({
         data: [],
         error:""
     },
-    reducers: {
-        setSearchProperty: (state, action) => {
-            state.data = action.payload
-        }
-    }, 
     extraReducers: (builder) => {
         builder
         .addCase(fetchPropertyData.pending, (state, action) => {
@@ -36,6 +42,21 @@ const propertySlice = createSlice({
             state.error = ""
         })
         .addCase(fetchPropertyData.rejected, (state, action) => {
+            state.loading = false,
+            state.data = [],
+            state.error = action.error.message
+        })
+
+        .addCase(searchProperty.pending, (state, action) => {
+            state.loading = true
+        })
+
+        .addCase(searchProperty.fulfilled, (state, action) => {
+            state.loading = false,
+            state.data = action.payload,
+            state.error = ""
+        })
+        .addCase(searchProperty.rejected, (state,action) => {
             state.loading = false,
             state.data = [],
             state.error = action.error.message
