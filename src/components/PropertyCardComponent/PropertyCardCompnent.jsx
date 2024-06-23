@@ -16,28 +16,28 @@ const PropertyCardCompnent = ({property}) => {
 
     useEffect(() => {
         getUserData()
-        console.log("userDAta"+userData.wishlist)
-
-        // if(userData && userData.wishlist && userData.wishlist.includes(property._id)){
-        //     setWish(true)
-        // }
     }, [])
 
     const authToken = window.localStorage.getItem("airbnbToken")
     console.log("authtoken from card"+authToken)
 
     const getUserData = async() => {
-        const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
-        // setUserData(response.data)
-        if(response.data && response.data.wishlist && response.data.wishlist.includes(property._id)){
-            setWish(true)
+        if(authToken){
+            const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
+            // setUserData(response.data)
+            if(response.data && response.data.wishlist && response.data.wishlist.includes(property._id)){
+                setWish(true)
+            }
         }
     }
 
     
 
     const handleLike = async() => {
-        
+        if(!authToken){
+            alert("Redirecting to login page")
+            window.location.href = "/login"
+        }
         try{
             const response = await axios.post("http://localhost:3000/api/v1/user/addPropertyToWishlist", 
                 {
@@ -60,7 +60,10 @@ const PropertyCardCompnent = ({property}) => {
 
 
     const handleDisLike = async() => {
-        
+        if(!authToken){
+            alert("Redirecting to login page")
+            window.location.href = "/login"
+        }
         try{
             const response = await axios.post("http://localhost:3000/api/v1/user/removePropertyFromWishlist", 
                 {
@@ -74,7 +77,6 @@ const PropertyCardCompnent = ({property}) => {
             if(response.status === 200){
                 alert("Property removied from wishlist")
                 setWish(false)
-
             }
         }
         catch(error){

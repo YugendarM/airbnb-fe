@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
-
+import { Link } from 'react-router-dom';
+import broken from "../../../assets/broken.jpg"
 
 const AddPropertyComponent = () => {
 
@@ -30,6 +31,8 @@ const AddPropertyComponent = () => {
         images:[],
         pricePerNight:0
     })
+    const [userData, setUserData] = useState({})
+    const [userToken, setUserToken] = useState("")
 
     const onChangeHandler = (event) => {
         setPropertyData((prev) => ({
@@ -87,9 +90,47 @@ const AddPropertyComponent = () => {
         }
     }
 
+    const getUserData = async()=> {
+        const authToken = window.localStorage.getItem('airbnbToken')
+        if(authToken){
+            setUserToken(authToken)
+            const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
+            setUserData(response.data)
+            console.log("roleeee"+userData.role)
+        }
+    }
+
+    useEffect(() => {
+        getUserData()
+    }, [])
+
   return (
 
-      <React.Fragment>
+    <React.Fragment>
+        {/* {
+            !userToken &&
+            <div>
+                <p>Login to continue</p>
+                <Link to={"/login"}>Login</Link>
+            </div>
+        }
+        {
+            userToken && userData.role !== "admin" && 
+            <div>
+                <p>You are not an Authorized User</p>
+                <Link to={"/"}>Return to Home</Link>
+            </div>
+        } */}
+        {
+            !userToken || (userToken && userData.role && userData.role !== "admin") &&
+            <div className='flex flex-col items-center'>
+                <img src={broken} className='h-96'/>
+                <h1 className='text-2xl'>{!userToken ? "You are not logged in" : (userToken && userData.role && userData.role !== "admin")? "You are not an Authorised User" : null}</h1>
+                <Link to={!userToken ? "/login" : (userToken && userData.role && userData.role !== "admin")? "/" : null} className='text-blue-400 underline'>{!userToken ? "Login to continue" : (userToken && userData.role && userData.role !== "admin")? "Return to Home" : null}</Link>
+            </div>
+        }
+        {
+            userData.role === "admin" &&
             <div className='px-96 pb-20'>
                 <h1 className='text-2xl font-semibold'>Add your property </h1>
                 <form id='formElem' className='py-5 flex flex-col gap-3'>
@@ -411,7 +452,7 @@ const AddPropertyComponent = () => {
 
                 </form>
             </div>
-        
+        }
     </React.Fragment>
   )
 }
