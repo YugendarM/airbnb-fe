@@ -3,16 +3,16 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../redux/user/userSlice';
+import { Link } from 'react-router-dom';
 
 const LoginPageCompnent = () => {
+
+    const authToken = window.localStorage.getItem("airbnbToken")
 
     const [userCredentials, setUserCredentials] = useState({
         email: "",
         password: ""
     })
-
-    // const dispatch = useDispatch()
-    // const userData = useSelector((state => state.user))
 
     const onChangeHandler = (event) => {
         setUserCredentials((prev) => ({
@@ -58,45 +58,46 @@ const LoginPageCompnent = () => {
     }
 
   return (
-    <div>
-        <h1>User Login</h1>
-        <form>
-            <TextField
-                name='email'
-                value={userCredentials.email}
-                className='border border-black focus:outline-pink-400 w-full focus:ring-black'
-                required
-                id="outlined-required"
-                type=""
-                placeholder='Enter Email'
-                label="Email"
-                onChange={(event) => onChangeHandler(event)}
-            />  
-            <TextField
-                name='password'
-                value={userCredentials.password}
-                className='border border-black focus:outline-pink-400 w-full focus:ring-black'
-                required
-                id="outlined-required"
-                type="password"
-                placeholder='Enter password'
-                label="Password"
-                onChange={(event) => onChangeHandler(event)}
-            />  
-            <button type='submit' className='' onClick={(event) => handleSubmit(event)}>Login</button>
-        </form>
-        <div>
-            {/* {
-                userData.loading && <p>Loading</p>
-            }
-            {
-                !userData.loading && userData.data.token && <p>Login successfull</p>
-            }
-            {
-                !userData.loading && !userData.data.token && userData.error && <p>Error logging in</p>
-            } */}
+    <React.Fragment>
+        {
+            !authToken && 
+            <div className='w-full md:w-1/2 lg:w-1/4 mx-auto my-auto h-full px-4'>
+            <h1 className='text-2xl font-semibold text-center py-4'>User Login</h1>
+            <form className='flex flex-col justify-center gap-8'>
+                <TextField
+                    name='email'
+                    value={userCredentials.email}
+                    className='border border-black focus:outline-pink-400 w-full focus:ring-black'
+                    required
+                    id="outlined-required"
+                    type=""
+                    placeholder='Enter Email'
+                    label="Email"
+                    onChange={(event) => onChangeHandler(event)}
+                />  
+                <TextField
+                    name='password'
+                    value={userCredentials.password}
+                    className='border border-black focus:outline-pink-400 w-full focus:ring-black'
+                    required
+                    id="outlined-required"
+                    type="password"
+                    placeholder='Enter password'
+                    label="Password"
+                    onChange={(event) => onChangeHandler(event)}
+                />  
+                <button type='submit' className='bg-airbnb-primaryPink text-white font-semibold text-xl rounded-md px-4 py-2' onClick={(event) => handleSubmit(event)}>Login</button>
+            </form>
         </div>
-    </div>
+        }
+        {
+            authToken && 
+            <div className='flex flex-col justify-center h-screen w-screen items-center'>
+                <p className='text-2xl font-semibold'>User Already Logged In :)</p>
+                <p className='text-xl font-semibold'>Return to <Link className='text-blue-500 underline' to={"/"} >Home</Link> to explore properties</p>
+            </div>
+        }
+    </React.Fragment>
   )
 }
 

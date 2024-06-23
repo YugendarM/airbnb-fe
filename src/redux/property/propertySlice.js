@@ -23,6 +23,22 @@ export const searchProperty = createAsyncThunk(
     }
 )
 
+export const fetchWishlist = createAsyncThunk(
+    "property/fetchWishlist",
+    (authToken) => {
+        console.log("tokenfrom redux", authToken)
+        return axios.post("http://localhost:3000/api/v1/property/getWishlistProperty", {}, {
+            headers: {
+                "Authorization": `Bearer ${authToken}`
+            }
+        })
+        .then((response) => {
+            console.log("response.data from redux",response.data)
+            return response.data
+        })
+    } 
+)
+
 
 const propertySlice = createSlice({
     name: "property",
@@ -57,6 +73,20 @@ const propertySlice = createSlice({
             state.error = ""
         })
         .addCase(searchProperty.rejected, (state,action) => {
+            state.loading = false,
+            state.data = [],
+            state.error = action.error.message
+        })
+        .addCase(fetchWishlist.pending, (state, action) => {
+            state.loading = true
+        })
+
+        .addCase(fetchWishlist.fulfilled, (state, action) => {
+            state.loading = false,
+            state.data = action.payload,
+            state.error = ""
+        })
+        .addCase(fetchWishlist.rejected, (state,action) => {
             state.loading = false,
             state.data = [],
             state.error = action.error.message

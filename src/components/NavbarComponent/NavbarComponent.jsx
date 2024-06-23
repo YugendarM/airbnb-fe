@@ -10,6 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchProperty } from '../../redux/property/propertySlice';
 import {setUserData} from "../../redux/user/userSlice"
 import axios from 'axios';
+import { IoClose } from "react-icons/io5";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
+
 
 const NavbarComponent = () => {
 
@@ -49,6 +57,14 @@ const NavbarComponent = () => {
   const formRef = useRef(null);
   const guestRef = useRef(null);
   const optionsRef = useRef(null);
+  const dateInputRef = useRef(null)
+
+  // const handleDateClick = () => {
+  //   // Focus on the date input field to open the date picker
+  //   if (dateInputRef.current) {
+  //     dateInputRef.current.focus();
+  //   }
+  // };
 
   const dispatch = useDispatch()
   const userData = useSelector((state => state.user))
@@ -67,10 +83,15 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     getUserData()
-    document.addEventListener('mousedown', () => handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    // document.addEventListener('mousedown', (e) => {
+    //   if(!guestRef.current.contains(e.target) || !optionsRef.current.contains(e.target) || !formRef.current.contains(e.target))
+    //     setFormClicked(false)
+    //     setGuestClicked(false)
+    //     setOptionsClicked(false)
+    //   });
+    // return () => {
+    //   document.removeEventListener('mousedown', handleClickOutside);
+    // };
   }, []);
 
   const getUserData = async() => {
@@ -78,8 +99,6 @@ const NavbarComponent = () => {
     console.log(userToken)
     setUserToken(userToken)
     if(userToken){
-      // const decodedToken = decodeJWT(userToken)
-      // console.log("decoded"+decodedToken.userName)
       const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: userToken})
       const {email, userName, role} = response.data
       dispatch(setUserData({email: email, userName: userName, role: role}))
@@ -87,21 +106,6 @@ const NavbarComponent = () => {
     }
   }
 
-  const decodeJWT = (token) => {
-    // Split the token into its three parts
-    const parts = token.split('.');
-
-    if (parts.length !== 3) {
-        throw new Error("Invalid JWT token");
-    }
-
-    // Get the payload (second part) and decode it from base64
-    const payloadBase64 = parts[1];
-    const payload = JSON.parse(atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/')));
-
-    return payload;
-};
-  
   const handleSearch = async() => {
     dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
   }
@@ -111,28 +115,29 @@ const NavbarComponent = () => {
     const year = today.getFullYear();
     let month = today.getMonth() + 1;
     let day = today.getDate();
-  
-    // Ensure month and day are in double digits (e.g., '05' for May, '01' for 1st)
     month = month < 10 ? `0${month}` : month;
-    day = day < 10 ? `0${day}` : day;
-  
+    day = day < 10 ? `0${day}` : day;  
     return `${year}-${month}-${day}`;
   };
 
-  const clearSearchStates = () => {
-    
-  }
-
   const location = useLocation()
-  //console.log(location)
+
+  // const handleSearchChange = (event) => {
+  //   setCity(event.target.value)
+  //   setFilteredSearch(cityList.filter((data) => {
+  //     return data.toLowerCase().includes(city.toLowerCase());
+  //   }))
+  // }
 
   const handleSearchChange = (event) => {
-    setCity(event.target.value)
-    //console.log("city"+city)
-    setFilteredSearch(cityList.filter((data) => {
-      return data.toLowerCase().includes(city.toLowerCase());
-    }))
-    //console.log("filteredSearch"+filteredSearch)
+    const newCity = event.target.value;
+    setCity(newCity);
+    const filteredSearch = cityList.filter((data) => {
+      return data.toLowerCase().includes(newCity.toLowerCase());
+    });
+    // Use a Set to ensure only unique values are included
+    const uniqueFilteredSearch = [...new Set(filteredSearch)];
+    setFilteredSearch(uniqueFilteredSearch);
   }
 
   const handleLogout = () => {
@@ -179,16 +184,23 @@ const NavbarComponent = () => {
                   className='bg-inherit focus:outline-none placeholder:text-sm' 
                   onChange={(e) => handleSearchChange(e)}
                   onKeyDown={() => setFilteredSearch([])}
+                  value={city}
                 />
                 
               </div>
               {
                   filteredSearch.length !==0 && 
-                  <div className='fixed top-44 bg-white z-10 shadow-custom-light rounded-md w-56 py-2'>
+                  <div className='fixed flex flex-col items-end top-40 bg-white z-10 shadow-custom-light rounded-md w-56 py-2'>
+                    <div className='px-2' onClick={() => setFilteredSearch([])}><IoClose className='text-xl cursor-pointer'/></div>
                     <ul className='w-full'>
                       {
                         filteredSearch.map((data,index) => (
-                          <li className='py-1 px-3 hover:bg-gray-200 cursor-pointer' onClick={() => {setCity(data); setFilteredSearch([])}} key={index}>{data}</li>
+                          <li className='py-1 px-3 hover:bg-gray-200 cursor-pointer' 
+                          onClick={() => {
+                            setCity(data);
+                            setFilteredSearch([])
+                          }} 
+                          key={index}>{data}</li>
                         ))
                       }
                     </ul>
@@ -196,7 +208,7 @@ const NavbarComponent = () => {
                 }
               
               <div className='w-[40%] flex items-center h-full'>
-                <div className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
+                <div  className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check in</p>
                   {/* <input className='' type='date' name='checkIn' placeholder='Add dates' onFocus={(e) => e.target.placeholder = ''} onBlur={(e) => e.target.placeholder = 'Select a date'} /> */}
                   <input
@@ -210,7 +222,13 @@ const NavbarComponent = () => {
                     onChange={(e) => setCheckIn(e.target.value)}
                     min={getTodayDate()}
                     max={checkOut}
+                    ref={dateInputRef}
                   />
+                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoContainer components={['DatePicker']}>
+                      <DatePicker className='py-0 focus:outline-none w-20 focus:ring-0 focus:border-none h-20 '  />
+                    </DemoContainer>
+                  </LocalizationProvider> */}
                 </div>
                 <div className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check out</p>
@@ -256,7 +274,8 @@ const NavbarComponent = () => {
             }
             {
               guestClicked && 
-              <div ref={guestRef} className='bg-white w-[400px] flex flex-col gap-4 justify-end shadow-custom-light my-3 rounded-3xl px-8 py-6 z-10 fixed top-48'>
+              <div ref={guestRef} className='bg-white w-[400px] flex flex-col gap-4 justify-end items-end shadow-custom-light my-3 rounded-3xl px-8 py-6 z-10 fixed top-40'>
+                <div className='' onClick={() => setGuestClicked(false)}><IoClose className='text-2xl cursor-pointer'/></div>
                 <div className='flex w-full justify-between'>
                   <div>
                     <h6 className='text-base font-semibold'>Adults</h6>
@@ -379,10 +398,10 @@ const NavbarComponent = () => {
           </div>
           {
             optionsClicked && 
-            <div ref={optionsRef} className='bg-white  rounded-md shadow-custom-light flex flex-col gap-2 my-2 z-10 fixed top-24'>
-
-              <div className='border-b border-gray-300 py-2'>
-                <div className='flex  items-center justify-between hover:bg-gray-200 px-2 cursor-pointer'>
+            <div ref={optionsRef} className='bg-white  rounded-md shadow-custom-light flex flex-col gap-2 my-2 z-10 fixed top-16'>
+              <div className='self-end px-2 pt-2' onClick={() => setOptionsClicked(false)}><IoClose className='text-2xl cursor-pointer'/></div>
+              <div className='border-b border-gray-300 '>
+                <div className='flex  items-center justify-between hover:bg-gray-200 px-2 cursor-pointer gap-6'>
                   <p className='py-2 font-light'>2024 Summer release features </p>
                   <p className='bg-airbnb-primaryPink text-white font-semibold p-1 text-xs rounded'>New</p>
                 </div>
@@ -395,7 +414,7 @@ const NavbarComponent = () => {
                   }
                   <Link to={"/wishlist"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Wishlist</Link>
                   <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Trips</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>WishList</li>
+                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Stays</li>
                 </ul>
               </div>
 
@@ -423,7 +442,8 @@ const NavbarComponent = () => {
       </div>
       {
         formClicked &&
-        <div ref={formRef} className='flex flex-col gap-4 fixed z-10 bg-white left-1/2 transform -translate-x-1/2 right-1/2 top-24 w-3/4 shadow-custom-light px-5 py-3 '>
+        <div ref={formRef} className='md:hidden flex flex-col gap-4 fixed z-10 bg-white left-1/2 transform -translate-x-1/2 right-1/2 top-24 w-3/4 shadow-custom-light px-5 py-3 '>
+          <div className='self-end px-2 pt-2' onClick={() => setFormClicked(false)}><IoClose className='text-2xl cursor-pointer'/></div>
           <div className='w-full'>
             <p className='text-sm'>Where to?</p>
             <input type='text' className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none placeholder:text-sm' placeholder='Search destination' onChange={(e) => setCity(e.target.value)}/>
@@ -566,7 +586,13 @@ const NavbarComponent = () => {
                   </div>
                 </div>
 
+                <div className='bg-gray-300 h-[1px] w-full'></div>
+
               </div>
+          </div>
+          <div className='mt-3 md:hidden rounded-full bg-airbnb-primaryPink flex items-center justify-center gap-1 transition py-3' onClick={()=> handleSearch()}>
+            <IoSearch className='text-white text-xl'/>
+            <p className='text-white font-medium lg:block'>Search</p>
           </div>
         </div>
       }

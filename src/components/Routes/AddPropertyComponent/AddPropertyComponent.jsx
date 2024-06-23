@@ -122,16 +122,18 @@ const AddPropertyComponent = () => {
             </div>
         } */}
         {
-            !userToken || (userToken && userData.role && userData.role !== "admin") &&
             <div className='flex flex-col items-center'>
-                <img src={broken} className='h-96'/>
+                {
+                    (!userToken || (userToken && userData.role && userData.role !== "admin")) && 
+                    <img src={broken} className='h-96'/>
+                }
                 <h1 className='text-2xl'>{!userToken ? "You are not logged in" : (userToken && userData.role && userData.role !== "admin")? "You are not an Authorised User" : null}</h1>
                 <Link to={!userToken ? "/login" : (userToken && userData.role && userData.role !== "admin")? "/" : null} className='text-blue-400 underline'>{!userToken ? "Login to continue" : (userToken && userData.role && userData.role !== "admin")? "Return to Home" : null}</Link>
             </div>
         }
         {
             userData.role === "admin" &&
-            <div className='px-96 pb-20'>
+            <div className='px-6 md:px-32 lg:px-96 pb-20'>
                 <h1 className='text-2xl font-semibold'>Add your property </h1>
                 <form id='formElem' className='py-5 flex flex-col gap-3'>
                     <TextField

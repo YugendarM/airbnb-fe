@@ -58,7 +58,6 @@ const PropertyCardCompnent = ({property}) => {
         }
     }
 
-
     const handleDisLike = async() => {
         if(!authToken){
             alert("Redirecting to login page")
@@ -101,16 +100,16 @@ const PropertyCardCompnent = ({property}) => {
         </div>
         <div className='pt-3'>
             <div className='flex justify-between items-center'>
-                <p className='text-lg font-semibold'>{property.propertyType} in {property.address && property.address.city}</p>
+                <p className={`text-lg font-semibold ${!property.available && "line-through text-gray-500" }`}>{property.propertyType} in {property.address && property.address.city}</p>
                 <div className='px-2'>
                     {
                         property.available && (wish ? <FaHeart onClick={() => handleDisLike()} className='text-airbnb-primaryPink text-2xl'/> : <FaRegHeart onClick={() => handleLike()} className='text-gray-800 text-3xl pr-1 hover:text-airbnb-primaryPink cursor-pointer'/>)
                     }
                 </div>
             </div>
-            <p className='text-base text-gray-600'>{property.propertyName}</p>
-            <p className='text-base text-gray-600'>{property.beds} beds</p>
-            <div className='text-base text-gray-800 font-semibold'>₹{property.pricePerNight}&nbsp;<span className='font-normal'>night</span></div>
+            <p className={`text-base text-gray-600 ${!property.available && "line-through text-gray-500"}`}>{property.propertyName}</p>
+            <p className={`text-base text-gray-600 ${!property.available && "line-through text-gray-500"}`}>{property.beds} beds</p>
+            <div className={`text-base text-gray-600 font-semibold ${!property.available && "line-through text-gray-500"}`}>₹{property.pricePerNight}&nbsp;<span className='font-normal'>night</span></div>
         </div>
 
     </div>
