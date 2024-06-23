@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../redux/user/userSlice';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPageCompnent = () => {
 
@@ -30,6 +32,7 @@ const LoginPageCompnent = () => {
             if(response.status === 200){
                 window.localStorage.setItem('airbnbToken', response.data.token)
                 alert("User logged in successfully")
+                toast("user logged in")
                 window.location.href = "/"
             }
             else {
@@ -62,6 +65,7 @@ const LoginPageCompnent = () => {
         {
             !authToken && 
             <div className='w-full md:w-1/2 lg:w-1/4 mx-auto my-auto h-full px-4'>
+                <ToastContainer/>
             <h1 className='text-2xl font-semibold text-center py-4'>User Login</h1>
             <form className='flex flex-col justify-center gap-8'>
                 <TextField

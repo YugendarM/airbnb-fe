@@ -7,12 +7,14 @@ import FooterComponent from './components/FooterComponent/FooterComponent'
 import AddPropertyComponent from './components/Routes/AddPropertyComponent/AddPropertyComponent'
 import LoginPageCompnent from './components/Routes/LoginPageComponent/LoginPageCompnent'
 import WishlistComponent from './components/Routes/WishlistComponent/WishlistComponent'
+import { ToastContainer } from 'react-toastify'
 
 
 const App = () => {
   return (
     <div className=' '>
       <HeaderComponent/>
+      <ToastContainer/>
       <Routes>
             <Route path='/' element={<HomePageComponent/>}/>
             <Route path='/add/property' element={<AddPropertyComponent/>}/>

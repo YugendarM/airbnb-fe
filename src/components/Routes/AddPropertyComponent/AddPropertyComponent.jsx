@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import broken from "../../../assets/broken.jpg"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddPropertyComponent = () => {
 
@@ -82,6 +84,7 @@ const AddPropertyComponent = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+            toast("Property added successfully")
             window.location.href = "/"
             console.log(response)
         }
@@ -133,7 +136,9 @@ const AddPropertyComponent = () => {
         }
         {
             userData.role === "admin" &&
+            
             <div className='px-6 md:px-32 lg:px-96 pb-20'>
+                <ToastContainer />
                 <h1 className='text-2xl font-semibold'>Add your property </h1>
                 <form id='formElem' className='py-5 flex flex-col gap-3'>
                     <TextField
