@@ -18,22 +18,31 @@ const PropertyCardCompnent = ({property}) => {
         getUserData()
         console.log("userDAta"+userData.wishlist)
 
-        if(userData && userData.wishlist && userData.wishlist.includes(property._id)){
-            setWish(true)
-        }
+        // if(userData && userData.wishlist && userData.wishlist.includes(property._id)){
+        //     setWish(true)
+        // }
     }, [])
+
+    const authToken = window.localStorage.getItem("airbnbToken")
+    console.log("authtoken from card"+authToken)
 
     const getUserData = async() => {
         const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
-        setUserData(response.data)
+        // setUserData(response.data)
+        if(response.data && response.data.wishlist && response.data.wishlist.includes(property._id)){
+            setWish(true)
+        }
     }
 
-    const authToken = window.localStorage.getItem("airbnbToken")
+    
 
     const handleLike = async() => {
         
         try{
             const response = await axios.post("http://localhost:3000/api/v1/user/addPropertyToWishlist", 
+                {
+                    propertyId : property._id
+                },
                 {
                     headers:{
                         'Authorization': `Bearer ${authToken}`
@@ -49,10 +58,14 @@ const PropertyCardCompnent = ({property}) => {
         }
     }
 
+
     const handleDisLike = async() => {
         
         try{
             const response = await axios.post("http://localhost:3000/api/v1/user/removePropertyFromWishlist", 
+                {
+                    propertyId : property._id
+                }, 
                 {
                     headers:{
                         'Authorization': `Bearer ${authToken}`
@@ -61,7 +74,7 @@ const PropertyCardCompnent = ({property}) => {
             if(response.status === 200){
                 alert("Property removied from wishlist")
                 setWish(false)
-                
+
             }
         }
         catch(error){
@@ -84,12 +97,12 @@ const PropertyCardCompnent = ({property}) => {
                 
             </Carousel>
         </div>
-        <div>
+        <div className='pt-3'>
             <div className='flex justify-between items-center'>
                 <p className='text-lg font-semibold'>{property.propertyType} in {property.address && property.address.city}</p>
-                <div>
+                <div className='px-2'>
                     {
-                        property.available && (wish ? <FaHeart onClick={() => handleDisLike()} className='text-airbnb-primaryPink text-2xl'/> : <FaRegHeart onClick={() => handleLike()} className='text-gray-800 text-2xl pr-1 hover:text-airbnb-primaryPink cursor-pointer'/>)
+                        property.available && (wish ? <FaHeart onClick={() => handleDisLike()} className='text-airbnb-primaryPink text-2xl'/> : <FaRegHeart onClick={() => handleLike()} className='text-gray-800 text-3xl pr-1 hover:text-airbnb-primaryPink cursor-pointer'/>)
                     }
                 </div>
             </div>
