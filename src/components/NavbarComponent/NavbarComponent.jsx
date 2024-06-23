@@ -6,8 +6,10 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoSearch } from "react-icons/io5";
 import { CiCirclePlus } from "react-icons/ci";
 import { CiCircleMinus } from "react-icons/ci";
-import { useDispatch } from 'react-redux';
-import { searchProperty, setSearchProperty } from '../../redux/property/propertySlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { searchProperty } from '../../redux/property/propertySlice';
+import {setUserData} from "../../redux/user/userSlice"
+import axios from 'axios';
 
 const NavbarComponent = () => {
 
@@ -23,6 +25,25 @@ const NavbarComponent = () => {
     infants: 0,
     pets: 0
   })
+  const [filteredSearch, setFilteredSearch] = useState([])
+  const [userToken, setUserToken] = useState("")
+  const [userState, setUserState] = useState({
+    userName: "",
+    email: "",
+    role: ""
+  })
+  
+  const searchData = useSelector((state => state.property))
+
+  //console.log("search"+searchData.data)
+  let cityList = []
+  if(!searchData.loading && searchData.data && searchData.data.length !== 0 ){
+    cityList = searchData.data.map((data) => {
+      return data.address.city
+    })  
+  }
+
+  //console.log(cityList)
   
 
   const formRef = useRef(null);
@@ -30,6 +51,7 @@ const NavbarComponent = () => {
   const optionsRef = useRef(null);
 
   const dispatch = useDispatch()
+  const userData = useSelector((state => state.user))
 
   const handleClickOutside = (event) => {
     if (
@@ -44,11 +66,41 @@ const NavbarComponent = () => {
   };
 
   useEffect(() => {
+    getUserData()
     document.addEventListener('mousedown', () => handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const getUserData = async() => {
+    const userToken = window.localStorage.getItem("airbnbToken")
+    console.log(userToken)
+    setUserToken(userToken)
+    if(userToken){
+      // const decodedToken = decodeJWT(userToken)
+      // console.log("decoded"+decodedToken.userName)
+      const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: userToken})
+      const {email, userName, role} = response.data
+      dispatch(setUserData({email: email, userName: userName, role: role}))
+      
+    }
+  }
+
+  const decodeJWT = (token) => {
+    // Split the token into its three parts
+    const parts = token.split('.');
+
+    if (parts.length !== 3) {
+        throw new Error("Invalid JWT token");
+    }
+
+    // Get the payload (second part) and decode it from base64
+    const payloadBase64 = parts[1];
+    const payload = JSON.parse(atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/')));
+
+    return payload;
+};
   
   const handleSearch = async() => {
     dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
@@ -72,8 +124,23 @@ const NavbarComponent = () => {
   }
 
   const location = useLocation()
-  console.log(location)
- 
+  //console.log(location)
+
+  const handleSearchChange = (event) => {
+    setCity(event.target.value)
+    //console.log("city"+city)
+    setFilteredSearch(cityList.filter((data) => {
+      return data.toLowerCase().includes(city.toLowerCase());
+    }))
+    //console.log("filteredSearch"+filteredSearch)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('airbnbToken');
+    alert("User loged out successfully")
+    window.location.href = "/"
+  }
+
   return (
     <div className=''>
       <div className='flex justify-between items-center md:items-start px-4 md:px-10 py-10'>
@@ -101,12 +168,33 @@ const NavbarComponent = () => {
             
 
             {
-              location.pathname !== "/add/property" &&
+              location.pathname !== "/add/property" && location.pathname !== "/login" && location.pathname !== "/signup" &&
               <div className='rounded-full shadow-custom-light md:flex items-center w-full h-16 hidden '>
               <div className='w-[30%] h-full cursor-pointer rounded-full hover:bg-gray-200 transition px-6 flex flex-col justify-center items-start '>
                 <p className='text-sm font-medium'>Where</p>
-                <input type='text' name='city' placeholder='Search destination' className='bg-inherit focus:outline-none placeholder:text-sm' onChange={(e) => setCity(e.target.value)}/>
+                <input 
+                  autoComplete='off' 
+                  type='text' name='city' 
+                  placeholder='Search destination' 
+                  className='bg-inherit focus:outline-none placeholder:text-sm' 
+                  onChange={(e) => handleSearchChange(e)}
+                  onKeyDown={() => setFilteredSearch([])}
+                />
+                
               </div>
+              {
+                  filteredSearch.length !==0 && 
+                  <div className='fixed top-44 bg-white z-10 shadow-custom-light rounded-md w-56 py-2'>
+                    <ul className='w-full'>
+                      {
+                        filteredSearch.map((data,index) => (
+                          <li className='py-1 px-3 hover:bg-gray-200 cursor-pointer' onClick={() => {setCity(data); setFilteredSearch([])}} key={index}>{data}</li>
+                        ))
+                      }
+                    </ul>
+                  </div>
+                }
+              
               <div className='w-[40%] flex items-center h-full'>
                 <div className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check in</p>
@@ -280,7 +368,13 @@ const NavbarComponent = () => {
             <button className='hidden md:block hover:bg-gray-100 rounded-full py-1 px-3 transition text-xl'><FaGlobe /></button>
             <button className='flex gap-2 items-center justify-end px-3 py-0.5 rounded-full border border-gray-300 hover:shadow-md' onClick={() => setOptionsClicked((prev) => !prev)}>
               <RxHamburgerMenu className='text-lg font-semibold'/>
-              <div className='h-6 w-6 rounded-full bg-gray-800 flex justify-center items-center '><p className='text-xs flex text-white font-semibold'>Y</p></div>
+              <div className='h-6 w-6 rounded-full bg-gray-800 flex justify-center items-center '>
+                {
+                  userToken ? 
+                  <p className='text-xs flex text-white font-semibold'>{userData && userData.data && userData.data.userName && userData.data.userName.substring(0,1).toUpperCase()}</p>
+                  : <img src='https://t4.ftcdn.net/jpg/03/49/49/79/360_F_349497933_Ly4im8BDmHLaLzgyKg2f2yZOvJjBtlw5.jpg' className='w-full h-full rounded-full object-cover'  />
+                }
+              </div>
             </button>
           </div>
           {
@@ -294,12 +388,14 @@ const NavbarComponent = () => {
                 </div>
               </div>
 
-              <div className='py-2 border-b border-gray-300 w-full'>
+              <div className='py-2 border-b border-gray-300'>
                 <ul className='w-full'>
-                  <Link to={"/add/property"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Add your property</Link>
-                  <Link to={"/user/wishlist"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Wishlist</Link>
+                  {
+                    userToken && userData.data.role === "admin" &&  <Link to={"/add/property"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Add your property</Link>
+                  }
+                  <Link to={"/wishlist"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Wishlist</Link>
                   <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Trips</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Stays</li>
+                  <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>WishList</li>
                 </ul>
               </div>
 
@@ -313,7 +409,12 @@ const NavbarComponent = () => {
               <div className='py-2 border-b border-gray-300'>
                 <ul>
                   <li className='hover:bg-gray-200 px-2 py-2 font-light cursor-pointer'>Help Center</li>
-                  <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer'>Logout</li>
+                  {
+                    !userToken && <Link to={"/login"} className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer w-full inline-block'>Login</Link>
+                  }
+                  {
+                    userToken && <li className='hover:bg-gray-200 px-2 py-2 font-medium cursor-pointer' onClick={() => {handleLogout()}}>Logout</li>
+                  }
                 </ul>
               </div>
             </div>
@@ -326,6 +427,13 @@ const NavbarComponent = () => {
           <div className='w-full'>
             <p className='text-sm'>Where to?</p>
             <input type='text' className='w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none placeholder:text-sm' placeholder='Search destination' onChange={(e) => setCity(e.target.value)}/>
+            {/* <datalist id="searchList">
+              {
+                cityList.map((city) => {
+                  <option value={city}>{city} C</option>
+                })
+              }
+            </datalist> */}
           </div>
           <div className='h-full cursor-pointer flex flex-col justify-center'>
             <p className='text-sm'>Check in</p>

@@ -64,6 +64,5 @@ const propertySlice = createSlice({
     }
 })
 
-export const {setSearchProperty} =propertySlice.actions
 
 export default propertySlice.reducer

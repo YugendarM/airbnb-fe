@@ -61,45 +61,12 @@ const AddPropertyComponent = () => {
     formData.append('area', propertyData.area);
     formData.append('pricePerNight', propertyData.pricePerNight);
 
-    // let formData = new FormData([formElem]);
-    // for (let key in propertyData) {
-    //     if (propertyData.hasOwnProperty(key)) {
-    //         // Append each key-value pair to FormData
-    //         formData.append(key, JSON.stringify(propertyData[key]));
-    //     }
-    // }
-
-    
-
-// Function to recursively append JSON object to FormData
-// const appendToFormData = (formData, data, parentKey = '') => {
-//     if (Array.isArray(data)) {
-//         data.forEach((value, index) => {
-//             appendToFormData(formData, value, `${parentKey}[${index}]`);
-//         });
-//     } else if (typeof data === 'object' && data !== null) {
-//         Object.keys(data).forEach(key => {
-//             if (parentKey === '') {
-//                 appendToFormData(formData, data[key], key);
-//             } else {
-//                 appendToFormData(formData, data[key], `${parentKey}.${key}`);
-//             }
-//         });
-//     } else {
-//         formData.append(parentKey, data);
-//     }
-// };
-
-// // Append jsonData to FormData
-// appendToFormData(formData, propertyData);
-
     propertyData.images.forEach((image) => {
     formData.append('images', image);
     });
 
 
     const handleSubmit = async(event) => {
-    // formElem.onsubmit = async(event) => {
         event.preventDefault()
         console.log("form submit")
         console.log(propertyData)
@@ -112,7 +79,7 @@ const AddPropertyComponent = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            // window.location.href = "/"
+            window.location.href = "/"
             console.log(response)
         }
         catch(error) {

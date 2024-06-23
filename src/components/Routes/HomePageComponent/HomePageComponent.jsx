@@ -15,8 +15,17 @@ const HomePageComponent = () => {
       dispatch(fetchPropertyData())
     }, [])
 
-    console.log(propertyData)
-
+    let sortedPropertyData = [...propertyData.data]
+    sortedPropertyData.sort((a, b) => {
+      if (a.available && !b.available) {
+          return -1; // 'a' comes before 'b'
+      } else if (!a.available && b.available) {
+          return 1; // 'b' comes before 'a'
+      } else {
+          return 0; // No change in order
+      }
+  });
+    
   return (
     <React.Fragment>
       <div>
@@ -27,7 +36,7 @@ const HomePageComponent = () => {
       <div className={`homePropertyRenders px-10 ${propertyData.data.length === 0? "": "grid md:grid-cols-2 lg:grid-cols-4 gap-6 py-20"}`}>
         {
           !propertyData.loading && propertyData.data && propertyData.data.length !== 0 ?
-            propertyData.data.map((property, index) => (
+            sortedPropertyData.map((property, index) => (
               <PropertyCardCompnent property={property} key={index} />
             )) :
             !propertyData.loading && (

@@ -6,6 +6,7 @@ import ProfilePageComponent from "../src/components/Routes/ProfilePageComponent/
 import PropertiesLoadingComponent from './components/PropertiesLoadingComponent/PropertiesLoadingComponent'
 import FooterComponent from './components/FooterComponent/FooterComponent'
 import AddPropertyComponent from './components/Routes/AddPropertyComponent/AddPropertyComponent'
+import LoginPageCompnent from './components/Routes/LoginPageComponent/LoginPageCompnent'
 
 
 const App = () => {
@@ -14,9 +15,8 @@ const App = () => {
       <HeaderComponent/>
       <Routes>
             <Route path='/' element={<HomePageComponent/>}/>
-            {/* <Route path='/property/:propertyId' element={<HomePageComponent/>}/> */}
             <Route path='/add/property' element={<AddPropertyComponent/>}/>
-            <Route path='/profile' element={<ProfilePageComponent/>}/>
+            <Route path='/login' element={<LoginPageCompnent/>}/>
         </Routes>
         <FooterComponent/>
     </div>
