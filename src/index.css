@@ -11,45 +11,35 @@
     display: none; 
   }
 
-  input[type="date"]::-webkit-calendar-picker-indicator {
-    /* width: 100%; */
-    padding: 4px 0px;
-    /* background-color: blue; */
-    z-index: 10;
+/* StyledResults component styles */
+.StyledResults > div.line {
+  /* background-color: white; */
 }
 
-/* input[type="date"]::-webkit-calendar-picker-indicator:focus::before {
-  content: "Add dates";
-  width: 200px;
-            opacity: 50%;
-            font-size: 14px;
-            font-weight: 400;
-} */
+.StyledResults > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0 16px 0; /* Adjust padding as needed */
+  /* max-height: ${(props: any) => props.theme.maxHeight}; */
 
-input[type="date"]::-webkit-datetime-edit {
-  display: none;
-}
+  /* Individual result item styles */
+  .StyledResults > ul > li {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+    cursor: pointer; /* Ensure cursor is pointer on hover */
+  }
 
-input[type="date"]:focus::before,
-        input[type="date"]:valid::before {
-            content: "Add dates";
-            opacity: 50%;
-            font-size: 14px;
-            font-weight: 400;
-        }
+  .StyledResults > ul > li:hover {
+    /* background-color: ${(props: any) => props.theme.hoverBackgroundColor}; */
+  }
 
-input[type="date"] {
-  width: 100px;
-  /* padding: 10px; */
-  /* border: 1px solid #ccc; */
-  border-radius: 20%;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  position: relative;
-  gap: 5px;
-  /* -webkit-appearance: none; */
-  appearance: none;
-  /* background-color: red; */
+  .ellipsis {
+    text-align: left;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 13px; /* Adjust margin as needed */
+  }
 }

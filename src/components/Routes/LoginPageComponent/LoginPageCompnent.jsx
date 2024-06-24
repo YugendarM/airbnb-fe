@@ -27,7 +27,7 @@ const LoginPageCompnent = () => {
         event.preventDefault()
         console.log(userCredentials)
         try{
-            const response = await axios.post("http://localhost:3000/api/v1/user/login", userCredentials)
+            const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/login", userCredentials)
             console.log(response)
             if(response.status === 200){
                 window.localStorage.setItem('airbnbToken', response.data.token)

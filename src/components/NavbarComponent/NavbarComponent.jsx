@@ -12,12 +12,9 @@ import {setUserData} from "../../redux/user/userSlice"
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
 import { toast } from 'react-toastify';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-
+import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const NavbarComponent = () => {
@@ -84,17 +81,6 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     getUserData()
-    const dateInput = document.getElementById('customDatePicker');
-        dateInput.classList.add('placeholder-shown');
-    // document.addEventListener('mousedown', (e) => {
-    //   if(!guestRef.current.contains(e.target) || !optionsRef.current.contains(e.target) || !formRef.current.contains(e.target))
-    //     setFormClicked(false)
-    //     setGuestClicked(false)
-    //     setOptionsClicked(false)
-    //   });
-    // return () => {
-    //   document.removeEventListener('mousedown', handleClickOutside);
-    // };
   }, []);
 
   const getUserData = async() => {
@@ -102,7 +88,7 @@ const NavbarComponent = () => {
     console.log(userToken)
     setUserToken(userToken)
     if(userToken){
-      const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: userToken})
+      const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/details", {token: userToken})
       const {email, userName, role} = response.data
       dispatch(setUserData({email: email, userName: userName, role: role}))
       
@@ -110,8 +96,11 @@ const NavbarComponent = () => {
   }
 
   const handleSearch = async() => {
-    dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
-    toast("Search results found")
+    if(city){
+      dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
+      toast("Search results found")
+    }
+    
   }
 
   const getTodayDate = () => {
@@ -137,7 +126,7 @@ const NavbarComponent = () => {
     const newCity = event.target.value;
     setCity(newCity);
     const filteredSearch = cityList.filter((data) => {
-      return data.toLowerCase().includes(newCity.toLowerCase());
+      return data.toLowerCase().startsWith(newCity.toLowerCase());
     });
     // Use a Set to ensure only unique values are included
     const uniqueFilteredSearch = [...new Set(filteredSearch)];
@@ -148,6 +137,83 @@ const NavbarComponent = () => {
     localStorage.removeItem('airbnbToken');
     toast("User Logged out successflly")
     window.location.href = "/"
+  }
+
+  const searchRef = useRef(null)
+  const searchClickHandle = () => {
+    setFilteredSearch(cityList)
+    if(searchRef.current){
+      searchRef.current.focus()
+    }
+  }
+
+  const checkInRef = useRef()
+  const dateCheckInClickHandle = () => {
+    if(checkInRef.current){
+      checkInRef.current.setOpen(true);
+      // dateInputRef.current.showPicker?.();
+      
+    }
+  }
+
+  const checkOutRef = useRef()
+  const dateCheckOutClickHandle = () => {
+    if(checkOutRef.current){
+      checkOutRef.current.setOpen(true);
+      // dateInputRef.current.showPicker?.();
+      
+    }
+  }
+
+  const handleOnSearch = (string, results) => {
+    // onSearch will have as the first callback parameter
+    // the string searched and for the second the results.
+    console.log(string, results)
+  }
+
+  const handleOnHover = (result) => {
+    // the item hovered
+    console.log(result)
+  }
+
+  const handleOnSelect = (item) => {
+    // the item selected
+    console.log(item)
+  }
+
+  const handleOnFocus = () => {
+    console.log('Focused')
+  }
+
+  const items = [
+    {
+      id: 0,
+      name: 'Chennai'
+    },
+    {
+      id: 1,
+      name: 'Coimbatore'
+    },
+    {
+      id: 2,
+      name: 'Trichy'
+    },
+    {
+      id: 3,
+      name: 'Madurai'
+    },
+    {
+      id: 4,
+      name: 'Vellore'
+    }
+  ]
+
+  const formatResult = (item) => {
+    return (
+      <>
+        <span style={{ display: 'block', textAlign: 'left' }}>{item.name}</span>
+      </>
+    )
   }
 
   return (
@@ -179,9 +245,10 @@ const NavbarComponent = () => {
             {
               location.pathname !== "/add/property" && location.pathname !== "/login" && location.pathname !== "/signup" &&
               <div className='rounded-full shadow-custom-light md:flex items-center w-full h-16 hidden '>
-              <div className='w-[30%] h-full cursor-pointer rounded-full hover:bg-gray-200 transition px-6 flex flex-col justify-center items-start '>
+              <div onClick={() => searchClickHandle()} className='w-[30%] h-full cursor-pointer rounded-full hover:bg-gray-200 transition px-6 flex flex-col justify-center items-start '>
                 <p className='text-sm font-medium'>Where</p>
                 <input 
+                ref={searchRef}
                   id='customDatePicker'
                   autoComplete='off' 
                   type='text' name='city' 
@@ -191,6 +258,33 @@ const NavbarComponent = () => {
                   onKeyDown={() => setFilteredSearch([])}
                   value={city}
                 />
+                {/* <ReactSearchAutocomplete
+                ref={searchRef}
+                className='w-full z-20 custom-autocomplete-input'
+                  items={items}
+                  onSearch={handleOnSearch}
+                  onHover={handleOnHover}
+                  onSelect={handleOnSelect}
+                  onFocus={handleOnFocus}
+                  autoFocus
+                  formatResult={formatResult}
+                  placeholder='Search destination'
+                  showIcon={false}
+                  
+                  styling={
+                    {
+                      borderRadius: "0px",
+                      backgroundColor: "inherit",
+                      border: "none",
+                      boxShadow: "none",
+                      padding: "0px",
+                      margin: "0px",
+                      height: "24px",
+                      placeholderFontWeight: "200",
+                      // hoverBackgroundColor: "black"
+                    }
+                  }
+                /> */}
                 
               </div>
               {
@@ -213,39 +307,26 @@ const NavbarComponent = () => {
                 }
               
               <div className='w-[40%] flex items-center h-full'>
-                <div  className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
+                <div onClick={() => dateCheckInClickHandle()}  className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check in</p>
-                  {/* <input className='' type='date' name='checkIn' placeholder='Add dates' onFocus={(e) => e.target.placeholder = ''} onBlur={(e) => e.target.placeholder = 'Select a date'} /> */}
-                  <input
-                    className='text-sm bg-inherit w-full cursor-pointer focus:outline-none placeholder:text-sm'
-                    name='checkIn'
-                    type="date"
-                    value={checkIn}
-                    id='customDatePicker'
-                    // placeholder='Add dates'
-                    // onFocus={(e) => (e.target.type = "date")}
-                    // onBlur={(e) => (e.target.type = "text")}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    min={getTodayDate()}
-                    max={checkOut}
-                    ref={dateInputRef}
+                  <DatePicker 
+                    selected={checkIn}
+                    ref={checkInRef} 
+                    className='w-full bg-inherit focus:outline-none' 
+                    placeholderText='Add dates' 
+                    minDate={checkIn ? checkIn: getTodayDate()}
+                    onChange={(date) => setCheckIn(date)}
                   />
-                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']}>
-                      <DatePicker className='py-0 focus:outline-none w-20 focus:ring-0 focus:border-none h-20 '  />
-                    </DemoContainer>
-                  </LocalizationProvider> */}
                 </div>
-                <div className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
+                <div onClick={() => dateCheckOutClickHandle()} className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check out</p>
-                  <input
-                    className=' text-sm bg-inherit w-full cursor-pointer focus:outline-none placeholder:text-sm'
-                    name='checkOut'
-                    type="date"
-                    // placeholder='Add dates'
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    min={getTodayDate() && checkIn}
-                    value={checkOut}
+                  <DatePicker 
+                    selected={checkOut}
+                    ref={checkOutRef} 
+                    className='w-full bg-inherit focus:outline-none' 
+                    placeholderText='Add dates' 
+                    minDate={getTodayDate()}
+                    onChange={(date) => setCheckOut(date)}
                   />
                 </div>
               </div>
@@ -256,7 +337,7 @@ const NavbarComponent = () => {
                 <div className=''>
                   <p className='text-sm font-medium'>Who</p>
                   {/* <input className='bg-inherit focus:outline-none' type='text' name='people' placeholder='Add guests'/> */}
-                  <p className='text-sm text-gray-400 font-normal'>
+                  <p className='text-sm text-gray-400 font-normal w-20'>
                     {guest.adults+guest.children+guest.infants ? <p>{guest.adults+guest.children+guest.infants} people</p> : <p>Add guests</p>}
                   </p>
                 </div>
@@ -268,8 +349,8 @@ const NavbarComponent = () => {
                   {
                     guestClicked && 
                     <div className=' rounded-full bg-airbnb-primaryPink flex items-center gap-1 transition' onClick={()=> handleSearch()}>
-                      <IoSearch className='text-white text-xl'/>
-                      <p className='text-white font-medium hidden lg:block'>Search</p>
+                      <IoSearch className='text-white text-2xl'/>
+                      {/* <p className='text-white font-medium hidden lg:block'>Search</p> */}
                     </div>
                   }
                 </div>
@@ -390,7 +471,7 @@ const NavbarComponent = () => {
             <button className='font-semibold hover:bg-gray-100 rounded-full py-3 transition px-2 hidden lg:block'>Airbnb your home</button>
             <button className='hidden md:block hover:bg-gray-100 rounded-full py-1 px-3 transition text-xl'><FaGlobe /></button>
             <button className='flex gap-2 items-center justify-end px-3 py-0.5 rounded-full border border-gray-300 hover:shadow-md' onClick={() => setOptionsClicked((prev) => !prev)}>
-              <RxHamburgerMenu className='text-lg font-semibold'/>
+              <RxHamburgerMenu className='text-lg font-semibold hidden md:block'/>
               <div className='h-6 w-6 rounded-full bg-gray-800 flex justify-center items-center '>
                 {
                   userToken ? 
@@ -402,7 +483,7 @@ const NavbarComponent = () => {
           </div>
           {
             optionsClicked && 
-            <div ref={optionsRef} className='bg-white  rounded-md shadow-custom-light flex flex-col gap-2 my-2 z-10 fixed top-16'>
+            <div ref={optionsRef} className='bg-white  rounded-md shadow-custom-light flex flex-col gap-2 my-2 z-10 fixed top-16 right-10'>
               <div className='self-end px-2 pt-2' onClick={() => setOptionsClicked(false)}><IoClose className='text-2xl cursor-pointer'/></div>
               <div className='border-b border-gray-300 '>
                 <div className='flex  items-center justify-between hover:bg-gray-200 px-2 cursor-pointer gap-6'>

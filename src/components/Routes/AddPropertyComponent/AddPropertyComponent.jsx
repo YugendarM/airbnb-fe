@@ -77,18 +77,30 @@ const AddPropertyComponent = () => {
         console.log(propertyData)
     
         try{
-            console.log("farmData"+formData.beds)
-            const response =await axios.post("http://localhost:3000/api/v1/property/addNewProperty", formData,
+            console.log("propertyADta", propertyData)
+            console.log(formData)
+            console.log("farmData"+formData.propertyName)
+            const response =await axios.post("https://airbnb-be.vercel.app/api/v1/property/addNewProperty", formData,
                 {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            toast("Property added successfully")
-            window.location.href = "/"
+            if(response.status === 201){
+                toast("Property added successfully")
+                setTimeout(() => {
+                    window.location.href = "/"
+                },3000)
+            }
+            else{
+                toast(`Error ${response.status}:Error adding property`)
+                toast(`${response.message}`)
+            }
             console.log(response)
         }
         catch(error) {
+            toast(`Error ${response.status}:Error adding property`)
+            toast(`${response.message}`)
             console.log(error)
         }
     }
@@ -97,7 +109,7 @@ const AddPropertyComponent = () => {
         const authToken = window.localStorage.getItem('airbnbToken')
         if(authToken){
             setUserToken(authToken)
-            const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
+            const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/details", {token: authToken})
             setUserData(response.data)
             console.log("roleeee"+userData.role)
         }

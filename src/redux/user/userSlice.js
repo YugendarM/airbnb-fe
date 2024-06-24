@@ -5,7 +5,7 @@ export const loginUser = createAsyncThunk(
     "user/loginUser",
     (userCredentials) => {
         // console.log(userCredentials)
-        return axios.post("http://localhost:3000/api/v1/user/login", userCredentials)
+        return axios.post("https://airbnb-be.vercel.app/api/v1/user/login", userCredentials)
         .then((response) => {
             console.log(".then running")
             console.log("redux respose"+response)

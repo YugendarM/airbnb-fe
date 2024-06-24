@@ -35,7 +35,7 @@ const HomePageComponent = () => {
         {
           propertyData.loading && <div className='w-full'><PropertiesLoadingComponent/></div>
         }
-      <div className={`homePropertyRenders px-10 ${propertyData.data.length === 0? "": "grid md:grid-cols-2 lg:grid-cols-4 gap-6 py-"}`}>
+      <div className={`homePropertyRenders px-10 pb-20 ${propertyData.data.length === 0? "": "grid md:grid-cols-2 lg:grid-cols-4 gap-6 py-"}`}>
         {
           !propertyData.loading && propertyData.data && propertyData.data.length !== 0 ?
             sortedPropertyData.map((property, index) => (

@@ -23,7 +23,7 @@ const PropertyCardCompnent = ({property}) => {
 
     const getUserData = async() => {
         if(authToken){
-            const response = await axios.post("http://localhost:3000/api/v1/user/details", {token: authToken})
+            const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/details", {token: authToken})
             // setUserData(response.data)
             if(response.data && response.data.wishlist && response.data.wishlist.includes(property._id)){
                 setWish(true)
@@ -40,7 +40,7 @@ const PropertyCardCompnent = ({property}) => {
         }
         else {
             try{
-                const response = await axios.post("http://localhost:3000/api/v1/user/addPropertyToWishlist", 
+                const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/addPropertyToWishlist", 
                     {
                         propertyId : property._id
                     },
@@ -66,7 +66,7 @@ const PropertyCardCompnent = ({property}) => {
             window.location.href = "/login"
         }
         try{
-            const response = await axios.post("http://localhost:3000/api/v1/user/removePropertyFromWishlist", 
+            const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/removePropertyFromWishlist", 
                 {
                     propertyId : property._id
                 }, 
@@ -93,7 +93,7 @@ const PropertyCardCompnent = ({property}) => {
                     property.images && 
                     property.images.map((image, index) => (
                         <div className='w-full h-72 ' key={index}>
-                            <img src={`http://localhost:3000/${image}`} className={`w-full h-full object-cover rounded-lg ${property.available ? "nothing" : "grayscale"}`}/>
+                            <img src={`https://airbnb-be.vercel.app/${image}`} className={`w-full h-full object-cover rounded-lg ${property.available ? "nothing" : "grayscale"}`}/>
                         </div>
                     ))
                 }

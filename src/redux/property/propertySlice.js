@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchPropertyData = createAsyncThunk(
     "property/fetchPropertyData",
     () => {
-        return axios.get("http://localhost:3000/api/v1/property/getAllProperties")
+        return axios.get("https://airbnb-be.vercel.app/api/v1/property/getAllProperties")
         .then((response) => {
             console.log(response)
             return response.data
@@ -15,7 +15,7 @@ export const fetchPropertyData = createAsyncThunk(
 export const searchProperty = createAsyncThunk(
     "property/searchProperty",
     ({city,adults,children,infants,pets}) => {
-        return axios.get(`http://localhost:3000/api/v1/property/search?city=${city}&adults=${adults}&children=${children}&infants=${infants}&pets=${pets}`)
+        return axios.get(`https://airbnb-be.vercel.app/api/v1/property/search?city=${city}&adults=${adults}&children=${children}&infants=${infants}&pets=${pets}`)
         .then((response) => {
             console.log(response)
             return response.data
@@ -27,7 +27,7 @@ export const fetchWishlist = createAsyncThunk(
     "property/fetchWishlist",
     (authToken) => {
         console.log("tokenfrom redux", authToken)
-        return axios.post("http://localhost:3000/api/v1/property/getWishlistProperty", {}, {
+        return axios.post("https://airbnb-be.vercel.app/api/v1/property/getWishlistProperty", {}, {
             headers: {
                 "Authorization": `Bearer ${authToken}`
             }
