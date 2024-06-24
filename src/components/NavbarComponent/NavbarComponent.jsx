@@ -141,7 +141,7 @@ const NavbarComponent = () => {
 
   const searchRef = useRef(null)
   const searchClickHandle = () => {
-    setFilteredSearch(cityList)
+    setFilteredSearch([...new Set(cityList)])
     if(searchRef.current){
       searchRef.current.focus()
     }
@@ -165,56 +165,7 @@ const NavbarComponent = () => {
     }
   }
 
-  const handleOnSearch = (string, results) => {
-    // onSearch will have as the first callback parameter
-    // the string searched and for the second the results.
-    console.log(string, results)
-  }
 
-  const handleOnHover = (result) => {
-    // the item hovered
-    console.log(result)
-  }
-
-  const handleOnSelect = (item) => {
-    // the item selected
-    console.log(item)
-  }
-
-  const handleOnFocus = () => {
-    console.log('Focused')
-  }
-
-  const items = [
-    {
-      id: 0,
-      name: 'Chennai'
-    },
-    {
-      id: 1,
-      name: 'Coimbatore'
-    },
-    {
-      id: 2,
-      name: 'Trichy'
-    },
-    {
-      id: 3,
-      name: 'Madurai'
-    },
-    {
-      id: 4,
-      name: 'Vellore'
-    }
-  ]
-
-  const formatResult = (item) => {
-    return (
-      <>
-        <span style={{ display: 'block', textAlign: 'left' }}>{item.name}</span>
-      </>
-    )
-  }
 
   return (
     <div className=''>
@@ -314,7 +265,7 @@ const NavbarComponent = () => {
                     ref={checkInRef} 
                     className='w-full bg-inherit focus:outline-none' 
                     placeholderText='Add dates' 
-                    minDate={checkIn ? checkIn: getTodayDate()}
+                    minDate={getTodayDate()}
                     onChange={(date) => setCheckIn(date)}
                   />
                 </div>
@@ -325,7 +276,7 @@ const NavbarComponent = () => {
                     ref={checkOutRef} 
                     className='w-full bg-inherit focus:outline-none' 
                     placeholderText='Add dates' 
-                    minDate={getTodayDate()}
+                    minDate={checkIn ? checkIn: getTodayDate()}
                     onChange={(date) => setCheckOut(date)}
                   />
                 </div>

@@ -88,6 +88,10 @@ const PropertyCardCompnent = ({property}) => {
   return (
     <div>
         <div className=''>
+            {
+                property.images.length <= 0 &&
+                <img src="https://www.jqueryscript.net/demo/responsive-card-slider/img/default.jpg" className={`w-full h-full object-cover rounded-lg ${property.available ? "nothing" : "grayscale"}`}/>
+            }
         <Carousel showThumbs={false} showStatus={false}>
                 {
                     property.images && 
