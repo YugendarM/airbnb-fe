@@ -6,7 +6,7 @@ import { MdOutlineStar } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa6";
 import axios from "axios"
-
+import { toast } from 'react-toastify';
 
 
 const PropertyCardCompnent = ({property}) => {
@@ -38,23 +38,25 @@ const PropertyCardCompnent = ({property}) => {
             alert("Redirecting to login page")
             window.location.href = "/login"
         }
-        try{
-            const response = await axios.post("http://localhost:3000/api/v1/user/addPropertyToWishlist", 
-                {
-                    propertyId : property._id
-                },
-                {
-                    headers:{
-                        'Authorization': `Bearer ${authToken}`
-                    }
-                })
-            if(response.status === 201){
-                alert("Property added to wishlist")
-                setWish(true)
+        else {
+            try{
+                const response = await axios.post("http://localhost:3000/api/v1/user/addPropertyToWishlist", 
+                    {
+                        propertyId : property._id
+                    },
+                    {
+                        headers:{
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    })
+                if(response.status === 201){
+                    toast("Property added to wishlist")
+                    setWish(true)
+                }
             }
-        }
-        catch(error){
-            console.error(error.message)
+            catch(error){
+                console.error(error.message)
+            }
         }
     }
 
@@ -74,7 +76,7 @@ const PropertyCardCompnent = ({property}) => {
                     }
                 })
             if(response.status === 200){
-                alert("Property removied from wishlist")
+                toast("Property removed from wishlist")
                 setWish(false)
             }
         }

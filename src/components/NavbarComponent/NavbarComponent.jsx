@@ -11,6 +11,7 @@ import { searchProperty } from '../../redux/property/propertySlice';
 import {setUserData} from "../../redux/user/userSlice"
 import axios from 'axios';
 import { IoClose } from "react-icons/io5";
+import { toast } from 'react-toastify';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -83,6 +84,8 @@ const NavbarComponent = () => {
 
   useEffect(() => {
     getUserData()
+    const dateInput = document.getElementById('customDatePicker');
+        dateInput.classList.add('placeholder-shown');
     // document.addEventListener('mousedown', (e) => {
     //   if(!guestRef.current.contains(e.target) || !optionsRef.current.contains(e.target) || !formRef.current.contains(e.target))
     //     setFormClicked(false)
@@ -108,6 +111,7 @@ const NavbarComponent = () => {
 
   const handleSearch = async() => {
     dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
+    toast("Search results found")
   }
 
   const getTodayDate = () => {
@@ -142,7 +146,7 @@ const NavbarComponent = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('airbnbToken');
-    alert("User loged out successfully")
+    toast("User Logged out successflly")
     window.location.href = "/"
   }
 
@@ -178,6 +182,7 @@ const NavbarComponent = () => {
               <div className='w-[30%] h-full cursor-pointer rounded-full hover:bg-gray-200 transition px-6 flex flex-col justify-center items-start '>
                 <p className='text-sm font-medium'>Where</p>
                 <input 
+                  id='customDatePicker'
                   autoComplete='off' 
                   type='text' name='city' 
                   placeholder='Search destination' 
@@ -214,11 +219,12 @@ const NavbarComponent = () => {
                   <input
                     className='text-sm bg-inherit w-full cursor-pointer focus:outline-none placeholder:text-sm'
                     name='checkIn'
-                    type="text"
+                    type="date"
                     value={checkIn}
-                    placeholder='Add dates'
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => (e.target.type = "text")}
+                    id='customDatePicker'
+                    // placeholder='Add dates'
+                    // onFocus={(e) => (e.target.type = "date")}
+                    // onBlur={(e) => (e.target.type = "text")}
                     onChange={(e) => setCheckIn(e.target.value)}
                     min={getTodayDate()}
                     max={checkOut}
@@ -235,10 +241,8 @@ const NavbarComponent = () => {
                   <input
                     className=' text-sm bg-inherit w-full cursor-pointer focus:outline-none placeholder:text-sm'
                     name='checkOut'
-                    type="text"
-                    placeholder='Add dates'
-                    onFocus={(e) => (e.target.type = "date")}
-                    onBlur={(e) => (e.target.type = "text")}
+                    type="date"
+                    // placeholder='Add dates'
                     onChange={(e) => setCheckOut(e.target.value)}
                     min={getTodayDate() && checkIn}
                     value={checkOut}

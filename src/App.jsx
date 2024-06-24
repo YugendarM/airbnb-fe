@@ -14,7 +14,19 @@ const App = () => {
   return (
     <div className=' '>
       <HeaderComponent/>
-      <ToastContainer/>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        // transition: Bounce
+      />
       <Routes>
             <Route path='/' element={<HomePageComponent/>}/>
             <Route path='/add/property' element={<AddPropertyComponent/>}/>

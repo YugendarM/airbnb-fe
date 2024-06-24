@@ -31,7 +31,10 @@ const WishlistComponent = () => {
   return (
     <React.Fragment>
       <div>
-        <h1 className='text-2xl font-semibold px-10'>Your Wishlist</h1>
+        {
+          propertyData && propertyData.data.length !==0 && 
+          <h1 className='text-2xl font-semibold px-10'>Your Wishlist</h1>
+        }
       </div>
         {
           propertyData.loading && <div className='w-full'><PropertiesLoadingComponent/></div>

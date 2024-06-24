@@ -31,9 +31,9 @@ const LoginPageCompnent = () => {
             console.log(response)
             if(response.status === 200){
                 window.localStorage.setItem('airbnbToken', response.data.token)
-                alert("User logged in successfully")
-                toast("user logged in")
+                // alert("User logged in successfully")
                 window.location.href = "/"
+                toast("user logged in")
             }
             else {
                 alert("Incorrect email or password")

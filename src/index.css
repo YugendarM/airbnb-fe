@@ -10,3 +10,46 @@
 .no-scrollbar::-webkit-scrollbar {
     display: none; 
   }
+
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    /* width: 100%; */
+    padding: 4px 0px;
+    /* background-color: blue; */
+    z-index: 10;
+}
+
+/* input[type="date"]::-webkit-calendar-picker-indicator:focus::before {
+  content: "Add dates";
+  width: 200px;
+            opacity: 50%;
+            font-size: 14px;
+            font-weight: 400;
+} */
+
+input[type="date"]::-webkit-datetime-edit {
+  display: none;
+}
+
+input[type="date"]:focus::before,
+        input[type="date"]:valid::before {
+            content: "Add dates";
+            opacity: 50%;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+input[type="date"] {
+  width: 100px;
+  /* padding: 10px; */
+  /* border: 1px solid #ccc; */
+  border-radius: 20%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  position: relative;
+  gap: 5px;
+  /* -webkit-appearance: none; */
+  appearance: none;
+  /* background-color: red; */
+}
