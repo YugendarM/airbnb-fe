@@ -80,7 +80,8 @@ const AddPropertyComponent = () => {
             console.log("propertyADta", propertyData)
             console.log(formData)
             console.log("farmData"+formData.propertyName)
-            const response =await axios.post("http://localhost:3000/api/v1/property/addNewProperty", formData,
+            // const response =await axios.post("http://localhost:3000/api/v1/property/addNewProperty", formData,
+            const response =await axios.post("https://airbnb-be.vercel.app/api/v1/property/addNewProperty", formData,
                 {
                 headers: {
                     'Content-Type': 'multipart/form-data'
