@@ -95,8 +95,8 @@ const CategoryTabComponent = () => {
     <React.Fragment>
       <div className='no-scrollbar flex items-center px-5 overflow-scroll gap-4 md:gap-6 lg:gap-10 mt-5'>
         {
-            categoryData.map((category) => (
-                <div className='flex flex-col items-center w-96 cursor-pointer' onClick={() => {setSelected(category.name)}}>
+            categoryData.map((category, index) => (
+                <div key={index} className='flex flex-col items-center w-96 cursor-pointer' onClick={() => {setSelected(category.name)}}>
                     <img src={category.icons} className='h-8'/>
                     <p className='text-xs w-20 text-center'>{category.name}</p>
                     <div className={`bg-gray-800 h-[2px] w-full my-3 mb-4 ${selected === category.name ? "bg-gray-800" : "bg-transparent"}`}></div>

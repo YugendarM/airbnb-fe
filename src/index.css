@@ -10,36 +10,3 @@
 .no-scrollbar::-webkit-scrollbar {
     display: none; 
   }
-
-/* StyledResults component styles */
-.StyledResults > div.line {
-  /* background-color: white; */
-}
-
-.StyledResults > ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0 0 16px 0; /* Adjust padding as needed */
-  /* max-height: ${(props: any) => props.theme.maxHeight}; */
-
-  /* Individual result item styles */
-  .StyledResults > ul > li {
-    display: flex;
-    align-items: center;
-    padding: 4px 0;
-    cursor: pointer; /* Ensure cursor is pointer on hover */
-  }
-
-  .StyledResults > ul > li:hover {
-    /* background-color: ${(props: any) => props.theme.hoverBackgroundColor}; */
-  }
-
-  .ellipsis {
-    text-align: left;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-left: 13px; /* Adjust margin as needed */
-  }
-}

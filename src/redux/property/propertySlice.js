@@ -6,7 +6,7 @@ export const fetchPropertyData = createAsyncThunk(
     () => {
         return axios.get("https://airbnb-be.vercel.app/api/v1/property/getAllProperties")
         .then((response) => {
-            console.log(response)
+            //console.log(response)
             return response.data
         })
     }
@@ -17,7 +17,7 @@ export const searchProperty = createAsyncThunk(
     ({city,adults,children,infants,pets}) => {
         return axios.get(`https://airbnb-be.vercel.app/api/v1/property/search?city=${city}&adults=${adults}&children=${children}&infants=${infants}&pets=${pets}`)
         .then((response) => {
-            console.log(response)
+            //console.log(response)
             return response.data
         })
     }
@@ -26,14 +26,14 @@ export const searchProperty = createAsyncThunk(
 export const fetchWishlist = createAsyncThunk(
     "property/fetchWishlist",
     (authToken) => {
-        console.log("tokenfrom redux", authToken)
+        //console.log("tokenfrom redux", authToken)
         return axios.post("https://airbnb-be.vercel.app/api/v1/property/getWishlistProperty", {}, {
             headers: {
                 "Authorization": `Bearer ${authToken}`
             }
         })
         .then((response) => {
-            console.log("response.data from redux",response.data)
+            //console.log("response.data from redux",response.data)
             return response.data
         })
     } 

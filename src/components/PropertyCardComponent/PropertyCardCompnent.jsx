@@ -19,7 +19,7 @@ const PropertyCardCompnent = ({property}) => {
     }, [])
 
     const authToken = window.localStorage.getItem("airbnbToken")
-    console.log("authtoken from card"+authToken)
+    //console.log("authtoken from card"+authToken)
 
     const getUserData = async() => {
         if(authToken){

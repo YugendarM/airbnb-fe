@@ -73,13 +73,13 @@ const AddPropertyComponent = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault()
-        console.log("form submit")
-        console.log(propertyData)
+        //console.log("form submit")
+        //console.log(propertyData)
     
         try{
-            console.log("propertyADta", propertyData)
-            console.log(formData)
-            console.log("farmData"+formData.propertyName)
+            //console.log("propertyADta", propertyData)
+            //console.log(formData)
+            //console.log("farmData"+formData.propertyName)
             // const response =await axios.post("http://localhost:3000/api/v1/property/addNewProperty", formData,
             const response =await axios.post("https://airbnb-be.vercel.app/api/v1/property/addNewProperty", formData,
                 {
@@ -97,10 +97,10 @@ const AddPropertyComponent = () => {
                 toast(`Error ${response.status}:Error adding property`)
                 toast(`${response.message}`)
             }
-            console.log(response)
+            //console.log(response)
         }
         catch(error) {
-            console.log("error")
+            //console.log("error")
            
             console.error(error)
         }
@@ -112,7 +112,7 @@ const AddPropertyComponent = () => {
             setUserToken(authToken)
             const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/details", {token: authToken})
             setUserData(response.data)
-            console.log("roleeee"+userData.role)
+            //console.log("roleeee"+userData.role)
         }
     }
 
@@ -461,7 +461,7 @@ const AddPropertyComponent = () => {
                                 ...prev,
                                 images: [...event.target.files]
                             }));
-                            console.log(propertyData.images)
+                            //console.log(propertyData.images)
                         } }/>
                     </div>
 

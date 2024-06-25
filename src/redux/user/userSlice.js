@@ -4,11 +4,11 @@ import axios from "axios";
 export const loginUser = createAsyncThunk(
     "user/loginUser",
     (userCredentials) => {
-        // console.log(userCredentials)
+        // //console.log(userCredentials)
         return axios.post("https://airbnb-be.vercel.app/api/v1/user/login", userCredentials)
         .then((response) => {
-            console.log(".then running")
-            console.log("redux respose"+response)
+            //console.log(".then running")
+            //console.log("redux respose"+response)
             return response.data
         })
     }
@@ -23,7 +23,7 @@ const userSlice = createSlice({
     },
     reducers: {
         setUserData: (state, action) => {
-            console.log("action.payload"+action.payload.userName)
+            //console.log("action.payload"+action.payload.userName)
             state.data = action.payload
         }
     }
@@ -34,14 +34,14 @@ const userSlice = createSlice({
     //     })
     //     .addCase(loginUser.fulfilled, (state,action) => {
     //         state.loading = false,
-    //         console.log("dataaaa"+state.data)
+    //         //console.log("dataaaa"+state.data)
     //         state.data = action.payload,
     //         state.error = ""
     //     })
     //     .addCase(loginUser.rejected, (state, action) => {
     //         state.loading= false
     //         state.data = []
-    //         console.log("action.err"+action.error)
+    //         //console.log("action.err"+action.error)
     //         state.error = action.error.message
     //     })
     // }

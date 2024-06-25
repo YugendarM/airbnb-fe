@@ -14,7 +14,7 @@ const WishlistComponent = () => {
 
     useEffect(() => {
         const authToken = window.localStorage.getItem("airbnbToken")
-        console.log("tokenfrom wishlist"+authToken)
+        //console.log("tokenfrom wishlist"+authToken)
       dispatch(fetchWishlist(authToken))
     }, [])
 

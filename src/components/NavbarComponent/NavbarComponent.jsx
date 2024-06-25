@@ -41,7 +41,7 @@ const NavbarComponent = () => {
   
   const searchData = useSelector((state => state.property))
 
-  //console.log("search"+searchData.data)
+  ////console.log("search"+searchData.data)
   let cityList = []
   if(!searchData.loading && searchData.data && searchData.data.length !== 0 ){
     cityList = searchData.data.map((data) => {
@@ -49,7 +49,7 @@ const NavbarComponent = () => {
     })  
   }
 
-  //console.log(cityList)
+  ////console.log(cityList)
   
 
   const formRef = useRef(null);
@@ -85,7 +85,7 @@ const NavbarComponent = () => {
 
   const getUserData = async() => {
     const userToken = window.localStorage.getItem("airbnbToken")
-    console.log(userToken)
+    //console.log(userToken)
     setUserToken(userToken)
     if(userToken){
       const response = await axios.post("https://airbnb-be.vercel.app/api/v1/user/details", {token: userToken})
@@ -99,6 +99,9 @@ const NavbarComponent = () => {
     if(city){
       dispatch(searchProperty({city:city, adults:guest.adults, children:guest.children, infants:guest.infants, pets:guest.pets}))
       toast("Search results found")
+    }
+    else{
+      toast("Enter city to search")
     }
     
   }
@@ -147,23 +150,6 @@ const NavbarComponent = () => {
     }
   }
 
-  const checkInRef = useRef()
-  const dateCheckInClickHandle = () => {
-    if(checkInRef.current){
-      checkInRef.current.setOpen(true);
-      // dateInputRef.current.showPicker?.();
-      
-    }
-  }
-
-  const checkOutRef = useRef()
-  const dateCheckOutClickHandle = () => {
-    if(checkOutRef.current){
-      checkOutRef.current.setOpen(true);
-      // dateInputRef.current.showPicker?.();
-      
-    }
-  }
 
 
 
@@ -209,43 +195,15 @@ const NavbarComponent = () => {
                   onKeyDown={() => setFilteredSearch([])}
                   value={city}
                 />
-                {/* <ReactSearchAutocomplete
-                ref={searchRef}
-                className='w-full z-20 custom-autocomplete-input'
-                  items={items}
-                  onSearch={handleOnSearch}
-                  onHover={handleOnHover}
-                  onSelect={handleOnSelect}
-                  onFocus={handleOnFocus}
-                  autoFocus
-                  formatResult={formatResult}
-                  placeholder='Search destination'
-                  showIcon={false}
-                  
-                  styling={
-                    {
-                      borderRadius: "0px",
-                      backgroundColor: "inherit",
-                      border: "none",
-                      boxShadow: "none",
-                      padding: "0px",
-                      margin: "0px",
-                      height: "24px",
-                      placeholderFontWeight: "200",
-                      // hoverBackgroundColor: "black"
-                    }
-                  }
-                /> */}
-                
               </div>
               {
                   filteredSearch.length !==0 && 
-                  <div className='fixed flex flex-col items-end top-40 bg-white z-10 shadow-custom-light rounded-md w-56 py-2'>
-                    <div className='px-2' onClick={() => setFilteredSearch([])}><IoClose className='text-xl cursor-pointer'/></div>
+                  <div className='fixed flex flex-col items-end top-44 bg-white z-10 shadow-custom-light rounded-xl w-64 py-2'>
+                    <div className='px-2' onClick={() => setFilteredSearch([])}><IoClose className='text-2xl cursor-pointer'/></div>
                     <ul className='w-full'>
                       {
                         filteredSearch.map((data,index) => (
-                          <li className='py-1 px-3 hover:bg-gray-200 cursor-pointer' 
+                          <li className='py-4 px-5 hover:bg-gray-200 cursor-pointer text-lg' 
                           onClick={() => {
                             setCity(data);
                             setFilteredSearch([])
@@ -262,22 +220,28 @@ const NavbarComponent = () => {
                   <p className='text-sm font-medium'>Check in</p>
                   <DatePicker 
                     selected={checkIn}
-                    ref={checkInRef} 
-                    className='w-full bg-inherit focus:outline-none' 
+                    className='w-full bg-inherit focus:outline-none z-50' 
                     placeholderText='Add dates' 
                     minDate={getTodayDate()}
-                    onChange={(date) => setCheckIn(date)}
+                    dateFormat= {'dd/MM/yyyy'}
+                    onChange={(date) => {
+                      setCheckIn(date)
+                    }}
                   />
                 </div>
                 <div onClick={() => dateCheckOutClickHandle()} className='w-1/2  rounded-full hover:bg-gray-200 transition px-6 h-full cursor-pointer flex flex-col justify-center'>
                   <p className='text-sm font-medium'>Check out</p>
                   <DatePicker 
                     selected={checkOut}
-                    ref={checkOutRef} 
-                    className='w-full bg-inherit focus:outline-none' 
+                    className='w-full bg-inherit focus:outline-none z-20' 
                     placeholderText='Add dates' 
                     minDate={checkIn ? checkIn: getTodayDate()}
-                    onChange={(date) => setCheckOut(date)}
+                    // shouldCloseOnSelect= {true}
+                    dateFormat= {'dd/MM/yyyy'}
+                    onChange={(date) => {
+                      setCheckOut(date)
+                      // setIsOpen(false)
+                    }}
                   />
                 </div>
               </div>
@@ -289,7 +253,8 @@ const NavbarComponent = () => {
                   <p className='text-sm font-medium'>Who</p>
                   {/* <input className='bg-inherit focus:outline-none' type='text' name='people' placeholder='Add guests'/> */}
                   <p className='text-sm text-gray-400 font-normal w-20'>
-                    {guest.adults+guest.children+guest.infants ? <p>{guest.adults+guest.children+guest.infants} people</p> : <p>Add guests</p>}
+                    {/* {guest.adults+guest.children+guest.infants ? <span>{guest.adults+guest.children+guest.infants} people</span> : <p>Add guests</p>} */}
+                    {guest.adults+guest.children+guest.infants ? guest.adults+guest.children+guest.infants + "people" : "Add guests"}
                   </p>
                 </div>
                 <div className='p-4 rounded-full bg-airbnb-primaryPink'>
